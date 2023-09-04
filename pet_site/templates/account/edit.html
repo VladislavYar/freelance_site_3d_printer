@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load user_filters %}
+
+{% block title %}Редактирование профиля{% endblock %}
+{% block col_count_2 %}{% endblock %}
+
+{% block content %}
+
+    <form method="post" action="{% url 'account:edit' %}" enctype="multipart/form-data">
+        <div class="row g-3 align-items-center">
+        {% csrf_token %}
+        <div class="col-lg-4 col-md-12">
+            <h1 class="text-center">Редактирование профиля</h1>
+            <hr>
+            {% for field in form %}
+                {% if field.errors %}
+                    <div class="col-12 p-2">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field|addclass:"form-control is-invalid" }}
+                        <div class="text-danger">
+                            {{ field.errors }}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12 p-2">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                        {{ field|addclass:"form-control" }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <div class="text-center mt-2">
+                <input class="btn btn-outline-success" type="submit" value="Изменить">
+                <p class="mt-2">
+                    <a class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" 
+                    href="{% url 'account:password_change_form' %}">
+                        Хотите изменить пароль?
+                    </a>
+                </p>
+            </div>
+            {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                    <div class="text-danger ms-3">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-lg-8 d-sm-none d-md-none d-lg-block">
+            <img class="img-fluid" src="{% static '/images/update_account.jpg' %}">
+        </div>
+        </div>
+    </form>
+
+{% endblock %}

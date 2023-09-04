@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load thumbnail %}
+{% load user_filters %}
+
+{% block title %}{{ user }}{% endblock %}
+{% block col_count_2 %}{% endblock %}
+
+{% block content %}
+        <div class="row">
+            <div class="col-lg-2 castom-border">
+                <div class="col-12 text-center">
+                    {% comment %}
+                        Получаем URL картинки-заглушки, проверяет
+                        на наличие аватарки пользователя, если нет
+                        выводим заглушку
+                    {% endcomment %}
+                    {% static 'images/no_user_picture_130x130.jpg' as NO_USER_PICTURE %}
+                    {% if user.user_picture %}
+                        {% thumbnail user.user_picture "120x120" crop="center" upscale=True  as im %}
+                            <img class="img-thumbnail" src="{{ im.url }}">
+                        {% endthumbnail %}
+                    {% else %}
+                            <img class="img-thumbnail" src="{{ NO_USER_PICTURE }}">
+                    {% endif %}
+                </div>
+                <div class="col-12 text-center fs-3">
+                    {{ user.username }}
+                </div>
+                <div class="col-12 text-center mt-2 mb-2">
+                    <a class="btn btn-dark btn-sm" href="{% url 'account:edit' %}">
+                        Изменить
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <h1 class="text-center">Ваш профиль</h1>
+                <hr>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td><b>Имя</b></td>
+                            <td>
+                                {% if user.first_name %}
+                                    {{ user.first_name }}
+                                {% else %}
+                                    <span class="text-danger">не указано</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Фамилия</b></td>
+                            <td>
+                                {% if user.last_name %}
+                                    {{ user.last_name }}
+                                {% else %}
+                                    <span class="text-danger">не указано</span>
+                                {% endif %}
+                            </td>
+                         </tr>
+                        <tr>
+                            <td><b>Пол</b></td>
+                            <td>
+                                {% if user.get_gender_display %}
+                                    {{ user.get_gender_display }}
+                                {% else %}
+                                    <span class="text-danger">не указано</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Дата рождения</b></td>
+                            <td>
+                                {% if user.birthday %}
+                                    {{ user.birthday }}
+                                {% else %}
+                                    <span class="text-danger">не указано</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Номер телефона</b></td>
+                            <td>
+                                {% if user.phone %}
+                                    {{ user.phone }}
+                                {% else %}
+                                    <span class="text-danger">не указано</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Почта</b></td>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                    </tbody>
+                  </table>
+                <div class="col-12 text-center fs-3">Биорграфия</div>
+                <div class="col-12 p-2">
+                    {% if user.biography %}
+                        <pre class="p-2">{{ user.biography }}</pre>
+                    {% else %}
+                        <span class="text-danger">не указано</span>
+                    {% endif %}
+                <div>
+            </div>
+        </div>
+
+{% endblock %}

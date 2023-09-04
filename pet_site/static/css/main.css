@@ -1,0 +1,42 @@
+.bg-castom {
+    background-attachment: fixed;
+}
+
+.pg-body-castom {
+    padding-top: 85px;
+}
+
+.shadow-castom {
+    box-shadow: 0 0 20px 10px;
+}
+
+.castom_text_bold {
+    font-weight: bold;
+   }
+
+.castom-border {
+    border-right: 1px solid rgba(0, 0, 0, 0.175);
+}
+
+
+@media screen and (max-width:992px) {
+    .castom-border {
+        border-right: 0px;
+    }
+}
+
+
+.castom-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}

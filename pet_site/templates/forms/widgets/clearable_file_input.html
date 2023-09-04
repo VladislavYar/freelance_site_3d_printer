@@ -1,0 +1,28 @@
+{% load thumbnail %}
+
+{% if widget.is_initial %}
+    {{ widget.initial_text|lower }} 
+    <div>
+        {% thumbnail widget.value "700x700" crop="center" upscale=True  as im %}
+            <img class="img-thumbnail" src="{{ im.url }}">
+        {% endthumbnail %}
+    </div>
+    {% if not widget.required %}
+        <div>
+            <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"{% if widget.attrs.disabled %} disabled{% endif %}>
+            <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+        </div>
+    {% endif %}
+    <div class="mt-3">
+        <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+    </div>
+{% else %}
+    <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+{% endif %}
+
+
+{% thumbnail image.image "300" as im %}
+    <a href="{{ image.image.url }}">
+        <img src="{{ im.url }}" class="image-detail">
+    </a>
+{% endthumbnail %}

@@ -1,0 +1,7 @@
+Django==4.2.4
+psycopg2==2.9.7
+python-dotenv==1.0.0
+django-phonenumbers==1.0.1
+django-phonenumber-field==7.1.0
+Pillow==10.0.0
+sorl-thumbnail==12.9.0
