@@ -1,12 +1,11 @@
 from datetime import date
 
-from phonenumber_field.modelfields import PhoneNumberField
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 from core.validators import validate_min_year
-
 
 GENDER_CHOICES = [
     ('male', 'мужской'),
@@ -50,5 +49,5 @@ class User(AbstractUser):
         blank=True, null=True,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.username}'

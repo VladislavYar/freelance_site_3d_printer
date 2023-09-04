@@ -1,13 +1,13 @@
-from django.contrib.auth.views import (LogoutView, LoginView,
+from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordChangeDoneView,
-                                       PasswordChangeView, PasswordResetView,
-                                       PasswordResetDoneView,
+                                       PasswordChangeView,
+                                       PasswordResetCompleteView,
                                        PasswordResetConfirmView,
-                                       PasswordResetCompleteView)
+                                       PasswordResetDoneView,
+                                       PasswordResetView)
 from django.urls import path
 
-from account.views import SignUpView, profile_update, profile
-
+from account.views import SignUpView, profile, profile_update
 
 app_name = 'account'
 

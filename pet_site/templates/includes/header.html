@@ -1,6 +1,5 @@
 {% load static %}
 {% load thumbnail %}
-
 {% load user_filters %}
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -53,11 +52,11 @@
                     {% url 'account:signup' as URL_SIGNUP %}
                     {% url 'account:login' as URL_LOGIN %}
                     <button class="btn btn-outline-success ms-3 h-75 btn-sm" {% if request.path == URL_LOGIN %}disabled{% endif %} 
-                    data-bs-toggle="modal" data-bs-target="#loginModal">
+                     data-bs-toggle="modal" data-bs-target="#loginModal">
                         Войти
                     </button>
                     <a class="btn btn-outline-light ms-2 me-5 h-75 btn-sm {% if request.path == URL_SIGNUP %}disabled{% endif %}" 
-                    href="{% url 'account:signup' %} ">
+                     href="{% url 'account:signup' %} ">
                         Регистрация
                     </a>
                 {% endif %}

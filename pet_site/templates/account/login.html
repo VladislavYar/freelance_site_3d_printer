@@ -4,11 +4,8 @@
 {% load user_filters %}
 
 {% block title %}Войти{% endblock %}
-
 {% block col_count_2 %}{% endblock %}
-
 {% block content %}
-
     {% if not user.is_authenticated %}
         <form method="post" action="{% url 'account:login' %}">
             <div class="row g-3 align-items-center">
@@ -59,5 +56,4 @@
         <hr>
         <p class="text-center">Вы не можете войти в новый профиль, пока авторизованы.</p>
     {% endif %}
-
 {% endblock %}

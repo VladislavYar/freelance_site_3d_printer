@@ -5,9 +5,7 @@
 
 {% block title %}Редактирование профиля{% endblock %}
 {% block col_count_2 %}{% endblock %}
-
 {% block content %}
-
     <form method="post" action="{% url 'account:edit' %}" enctype="multipart/form-data">
         <div class="row g-3 align-items-center">
         {% csrf_token %}
@@ -53,5 +51,4 @@
         </div>
         </div>
     </form>
-
 {% endblock %}

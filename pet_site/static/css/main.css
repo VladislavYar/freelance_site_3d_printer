@@ -19,17 +19,11 @@
 }
 
 
-@media screen and (max-width:992px) {
-    .castom-border {
-        border-right: 0px;
-    }
-}
-
-
 .castom-disabled {
     pointer-events: none;
     opacity: 0.5;
 }
+
 
 pre {
     white-space: pre-wrap;
@@ -39,4 +33,11 @@ pre {
     word-wrap: break-word;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
+}
+
+
+@media screen and (max-width:992px) {
+    .castom-border {
+        border-right: 0px;
+    }
 }

@@ -1,9 +1,8 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
-from django.forms import ImageField, CharField
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.forms import CharField, ImageField
 
 from core.widgets import CastomClearableFileInput
-
 
 User = get_user_model()
 

@@ -10,6 +10,13 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
     <head>
+        {% comment %}
+            Почитай о meta-данных, которые я вынес в блок,
+            там ничего сложного.
+            description - краткое описание;
+            keywords - ключевые слова(одежда, зимляя, ботинки);
+            title - название, передающее суть страницы(обычно совпадает h1 тегом).
+        {% endcomment %}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <meta name="description"  content="{% block description %}{% endblock %}">
@@ -28,6 +35,11 @@
         <main>
             <div class="container mt-3 mb-5 bg-body shadow-castom">
                 <div class="row">
+                    {% comment %}
+                        сol_count_2 - если нужна центральная и правая колонка;
+                        col_count_1 - если нужна одна колонка.
+                        Не забывай очищать ненужный блок.
+                    {% endcomment %}
                     {% block col_count_2 %}
                         <div class="col-lg-9 col-md-12 bg-white p-3" id="main">
                             {% block content_col_1 %}
