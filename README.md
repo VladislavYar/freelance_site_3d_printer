@@ -27,7 +27,7 @@ git clone git@github.com:VladislavYar/freelance_site_3d_printer.git
 Cоздать и активировать виртуальное окружение:
 
 ```
-python3 -m venv venv
+python -m venv venv
 ```
 
 * Если у вас Linux/macOS
@@ -45,7 +45,7 @@ python3 -m venv venv
 Установить зависимости из файла requirements.txt:
 
 ```
-python3 -m pip install --upgrade pip
+python -m pip install --upgrade pip
 ```
 
 ```
@@ -60,11 +60,15 @@ python manage.py migrate
 
 Создайте суперюзера (логин\почта\пароль):
 ```
-docker-compose exec web python manage.py createsuperuser
+python manage.py createsuperuser
 ```
 Соберите статические файлы:
 ```
-docker-compose exec web python manage.py collectstatic --no-input 
+python manage.py collectstatic --no-input
+```
+Запуск проект:
+```
+python manage.py runserver
 ```
 Теперь проект доступен по адресу http://localhost/
 
