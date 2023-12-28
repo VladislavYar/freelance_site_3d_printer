@@ -73,4 +73,4 @@ python manage.py runserver
 Теперь проект доступен по адресу http://localhost/
 
 ## Cтек проекта
-Python v3.11, Django, SQLAlchemy
+Python v3.11, Django, postgreSQL
