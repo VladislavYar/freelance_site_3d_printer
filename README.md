@@ -13,7 +13,6 @@ cd
 ```
 git clone git@github.com:VladislavYar/freelance_site_3d_printer.git
 ```
-### На данном этапе создайте env-файл по шаблону из раздела выше
 
 2. Cоздать и активировать виртуальное окружение:
 
