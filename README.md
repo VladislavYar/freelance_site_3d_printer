@@ -14,7 +14,7 @@
 
 ## Как запустить проект:
 
-В терминале, перейдите в каталог, в который будет загружаться приложение:
+1. В терминале, перейдите в каталог, в который будет загружаться приложение:
 ```
 cd 
 ```
@@ -24,7 +24,7 @@ git clone git@github.com:VladislavYar/freelance_site_3d_printer.git
 ```
 ### На данном этапе создайте env-файл по шаблону из раздела выше
 
-Cоздать и активировать виртуальное окружение:
+2. Cоздать и активировать виртуальное окружение:
 
 ```
 python -m venv venv
@@ -42,7 +42,7 @@ python -m venv venv
     source venv/scripts/activate
     ```
 
-Установить зависимости из файла requirements.txt:
+3. Установить зависимости из файла requirements.txt:
 
 ```
 python -m pip install --upgrade pip
@@ -52,25 +52,15 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Выпоните миграции:
+4. Создайте в папке `infra` файл `.env` и заполните его по шаблону [.env.example](https://github.com/VladislavYar/freelance_site_3d_printer/tree/develop/infra/.env.example)
+
+5. Запустите проект комадной:
 ```
-python manage.py makemigrations
-python manage.py migrate
+make project-init-dev # Для первого запуска.
+make project-start-dev # Для последующих.
 ```
 
-Создайте суперюзера (логин\почта\пароль):
-```
-python manage.py createsuperuser
-```
-Соберите статические файлы:
-```
-python manage.py collectstatic --no-input
-```
-Запуск проект:
-```
-python manage.py runserver
-```
 Теперь проект доступен по адресу http://localhost/
 
 ## Cтек проекта
-Python v3.11, Django, postgreSQL
+Python v3.11, Django, postgreSQL, Docker
