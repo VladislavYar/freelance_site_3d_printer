@@ -4,7 +4,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand ms-5" href="#">
+        <a class="navbar-brand ms-5" href="{% url 'order:index' %}">
             <span class="fs-1"><span class="text-info">YA</span>-PRESSED</span>
         </a>
         <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarControl" aria-controls="navbarControl" aria-expanded="false" aria-label="Переключатель навигации">
@@ -13,18 +13,19 @@
         <div class="navbar-collapse collapse" id="navbarControl" style="">
             <ul class="navbar-nav me-auto mb-2 ms-5 mb-lg-0 w-100 justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Главная</a>
+                    {% url 'order:index' as index_url %}
+                    <a
+                     class="nav-link {% if request.path == index_url %}active{% endif %}" aria-current="page" href="{% url 'order:index' %}">
+                     Главная
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Рекомендуемые</a>
+                    <a
+                     class="nav-link" aria-current="page" href="{% url 'order:index' %}">
+                     О нас
+                    </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Цена</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">О нас</a>
-                </li>
-                </ul>
+            </ul>
             <div class="d-flex">
                 {% if user.is_authenticated %}
                     {% comment %}

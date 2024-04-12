@@ -7,13 +7,13 @@ start-containers-dev: # Запуск контейнеров
 	@sleep 3;
 
 start-server-dev: # Запуск сервера
-	python pet_site/manage.py runserver
+	python src/manage.py runserver
 
 migrate-dev: # Выполнить миграции Django
-	python pet_site/manage.py migrate
+	python src/manage.py migrate
 
 createsuperuser-dev: # Создать супер пользователя
-	python pet_site/manage.py createsuperuser --noinput
+	python src/manage.py createsuperuser --noinput
 
 project-init-dev: # Инициализировать проект
 	make clear-volumes-dev start-containers-dev migrate-dev createsuperuser-dev start-server-dev

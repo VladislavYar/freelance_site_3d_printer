@@ -115,7 +115,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'account:login'
 LOGIN_REDIRECT_URL = '/account/'
 
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'account.User'
 
 YEARS_150_IN_DAYS = 54750
 

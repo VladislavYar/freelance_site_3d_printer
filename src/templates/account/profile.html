@@ -18,10 +18,10 @@
                     {% static 'images/no_user_picture_130x130.jpg' as NO_USER_PICTURE %}
                     {% if user.user_picture %}
                         {% thumbnail user.user_picture "120x120" crop="center" upscale=True  as im %}
-                            <img class="img-thumbnail" src="{{ im.url }}">
+                            <img class="img-thumbnail" src="{{ im.url }}" alt="фото профиля">
                         {% endthumbnail %}
                     {% else %}
-                            <img class="img-thumbnail" src="{{ NO_USER_PICTURE }}">
+                            <img class="img-thumbnail" src="{{ NO_USER_PICTURE }}" alt="фото профиля">
                     {% endif %}
                 </div>
                 <div class="col-12 text-center fs-3">

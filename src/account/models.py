@@ -5,7 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
-from core.validators import validate_min_year
+from account.validators import validate_min_year
 
 GENDER_CHOICES = [
     ('male', 'мужской'),
