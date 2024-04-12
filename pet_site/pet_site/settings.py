@@ -4,9 +4,12 @@ from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 from dotenv import load_dotenv
 
-load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+path_to_env = os.path.join(BASE_DIR, "..", "infra", ".env")
+
+load_dotenv(path_to_env)
 
 SECRET_KEY = os.getenv('SECRET_KEY', default=get_random_secret_key())
 
@@ -25,6 +28,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'account.apps.AccountConfig',
     'core.apps.CoreConfig',
+    'order.apps.OrderConfig',
     'sorl.thumbnail',
 ]
 
@@ -65,7 +69,7 @@ DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE',
                             default='django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME', default='YouBase'),
+        'NAME': os.getenv('POSTGRES_DB', default='YouBase'),
         'USER': os.getenv('POSTGRES_USER', default='YouName'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='YouPassword'),
         'HOST': os.getenv('DB_HOST', default='localhost'),
@@ -99,9 +103,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static/'),
-)
+if DEBUG:
+    STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static')
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
