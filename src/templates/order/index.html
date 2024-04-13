@@ -170,6 +170,42 @@
     </div>
 {% endblock %}
 {% block content_col_2 %}
-<p style="color: white;">Фильтры</p>
+    {% if data_filter.min_max_price.price__min != data_filter.min_max_price.price__max %}
+        <div class="text-info mt-2 fs-5">Оплата</div>
+        <div class="col-12 text-center">
+            <div id="min-price" style="display: none;">{{ data_filter.min_max_price.price__min }}</div>
+            <div id="max-price" style="display: none;">{{ data_filter.min_max_price.price__max }}</div>
+            <input type="text" id="price" readonly="" disabled class="text-center text-white border-0 bg-dark">
+            <div id="slider-range" class="mt-2"></div>
+        </div>
+    {% endif %}
+
+    {% if data_filter.cities and data_filter.cities|length > 1 %}
+        <div class="text-info mt-4 fs-5">Города</div>
+        <div class="col-12 text-center mt-2">
+            <select id="cities" class="form-select form-select-sm" multiple>
+                {% for city in data_filter.cities %}
+                    <option {% if city in request.GET.cities %}selected{% endif %} value="{{ city }}">{{ city }}</option>
+                {% endfor %}
+            </select>         
+        </div>
+    {% endif %}
+
+    {% if data_filter.users and data_filter.users|length > 1 %}
+        <div class="text-info mt-4 fs-5">Заказчик/Исполнитель</div>
+        <div class="col-12 text-center mt-2">
+            <select id="users" class="form-select form-select-sm" multiple>
+                {% for user in data_filter.users %}
+                    <option {% if user.username in request.GET.users %}selected{% endif %} value="{{ user.username }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>         
+        </div>
+    {% endif %}
+    <div class="col-12 text-center mt-2">
+        <button id="button-filter" type="button" class="btn btn-outline-info">Применить</button>
+    </div>
+    <div class="col-12 text-center mt-2 mb-2">
+        <a href="/" class="link-light link-underline-opacity-25 link-underline-opacity-100-hover">Сбросить фильтр</a>
+    </div>
 {% endblock %}
 {% block col_count_1 %}{% endblock %}
