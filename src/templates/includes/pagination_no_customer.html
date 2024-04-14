@@ -1,0 +1,45 @@
+<ul class="pagination justify-content-center mt-3">
+    <li class="page-item">
+        <a
+        class="btn button-left{% if 1 == orders_no_customer.number %} btn-outline-secondary disabled{% else %} btn-outline-info{% endif %} shadow"
+        href="{% if 1 == orders_no_customer.number %}#{% else %}?page_no_customer=1&customer_tab=0&page_customer={{ orders_customer.number }}{% if request.GET %}&{{ request.GET.urlencode }}{% endif %}{% endif %}"
+        >
+        Первая
+        </a>
+    </li>
+    <li class="page-item">
+        <a
+            class="btn button-сenter{% if not orders_no_customer.has_previous %} btn-outline-secondary disabled{% else %} btn-outline-info{% endif %} shadow" 
+            href="{% if orders_no_customer.has_previous %}?page_no_customer={{ orders_no_customer.previous_page_number }}&customer_tab=0&page_customer={{ orders_customer.number }}{% if request.GET %}&{{ request.GET.urlencode }}{% endif %}{% else %}#{% endif %}"
+            aria-label="Previous"
+        >
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    </li>
+    {% for page in orders_no_customer.paginator.page_range %}
+        <li class="page-item">
+            <a 
+                class="btn btn-outline-info button-сenter{% if page == orders_no_customer.number %} active{% endif %} shadow"
+                href="?page_no_customer={{ page }}&customer_tab=0&page_customer={{ orders_customer.number }}{% if request.GET %}&{{ request.GET.urlencode }}{% endif %}"
+            >
+                {{ page }}
+            </a>
+        </li>
+    {% endfor %}
+        <a
+            class="btn button-сenter{% if not orders_no_customer.has_next %} btn-outline-secondary disabled{% else %} btn-outline-info{% endif %} shadow" 
+            href="{% if orders_no_customer.has_next %}?page_no_customer={{ orders_no_customer.next_page_number }}&customer_tab=0&page_customer={{ orders_customer.number }}{% if request.GET %}&{{ request.GET.urlencode }}{% endif %}{% else %}#{% endif %}"
+            aria-label="Next"
+        >
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+    <li class="page-item">
+        <a
+        class="btn button-right{% if orders_no_customer.paginator.num_pages == orders_no_customer.number %} btn-outline-secondary disabled{% else %} btn-outline-info{% endif %} shadow"
+        href="{% if orders_no_customer.paginator.num_pages == orders_no_customer.number %}#{% else %}?page_no_customer={{ orders_no_customer.paginator.num_pages }}&customer_tab=0&page_customer={{ orders_customer.number }}{% if request.GET %}&{{ request.GET.urlencode }}{% endif %}{% endif %}"
+        >
+        Последняя
+        </a>
+    </li>
+</ul>

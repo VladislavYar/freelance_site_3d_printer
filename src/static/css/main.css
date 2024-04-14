@@ -41,3 +41,60 @@ pre {
         border-right: 0px;
     }
 }
+
+.ui-slider .ui-state-active {
+    background: #0dcaf0;
+    box-shadow: 0px 1px 2px 0px rgba(0,255,255,0.2),
+    1px 2px 4px 0px rgba(0,255,255,0.2),
+    2px 4px 8px 0px rgba(0,255,255,0.2),
+    2px 4px 16px 0px rgba(0,255,255,0.2);
+}
+
+.ui-slider .ui-corner-all {
+    border-radius: 10px;
+}
+
+.ui-slider .ui-slider-range {
+    background: #0dcaf0;
+}
+
+.castom-option:hover {
+    background: #cbcbcc;
+}
+
+.castom-shadow {
+    box-shadow: 0px 1px 2px 0px rgba(0,255,255,0.2),
+    1px 2px 4px 0px rgba(0,255,255,0.2),
+    2px 4px 8px 0px rgba(0,255,255,0.2),
+    2px 4px 16px 0px rgba(0,255,255,0.2);
+}
+
+.castom-shadow:focus {
+    box-shadow: 0px 1px 2px 0px rgba(0,255,255,0.4),
+    1px 2px 4px 0px rgba(0,255,255,0.4),
+    2px 4px 8px 0px rgba(0,255,255,0.4),
+    2px 4px 16px 0px rgba(0,255,255,0.4);
+}
+
+.castom-shadow-hover:hover {
+    box-shadow: 0px 1px 2px 0px rgba(0,255,255,0.4),
+    1px 2px 4px 0px rgba(0,255,255,0.4),
+    2px 4px 8px 0px rgba(0,255,255,0.4),
+    2px 4px 16px 0px rgba(0,255,255,0.4);
+}
+
+.button-left {
+    --bs-btn-active-color: white;
+    --bs-btn-hover-color: white;
+    border-radius: 20px 0px 0px 20px;
+}
+
+.button-right {
+    --bs-btn-active-color: white;
+    --bs-btn-hover-color: white;
+    border-radius: 0px 20px 20px 0px;
+}
+
+.button-сenter {
+    border-radius: 0px 0px 0px 0px;
+}

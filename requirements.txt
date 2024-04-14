@@ -5,3 +5,5 @@ django-phonenumbers==1.0.1
 django-phonenumber-field==7.1.0
 Pillow==10.0.0
 sorl-thumbnail==12.9.0
+pytils==0.4.1
+transliterate==1.10.2
