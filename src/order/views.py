@@ -1,5 +1,6 @@
 from django.db.models import Max, Min
 from django.core.handlers.wsgi import WSGIRequest
+from django.core.paginator import Paginator
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
@@ -57,9 +58,10 @@ def get_data_filter_model(
 def index(request: WSGIRequest) -> HttpResponse:
     """View главной страницы."""
     user = request.user
+    data_get = request.GET.copy()
     data_filter_template = get_data_filter_template(user)
     price, cities, users = get_data_filter_model(
-        user, request.GET, data_filter_template
+        user, data_get, data_filter_template
         )
     orders = Order.objects.filter(
         city__in=cities, user__username__in=users,
@@ -74,9 +76,21 @@ def index(request: WSGIRequest) -> HttpResponse:
             orders_сustomer.append(order)
             continue
         orders_no_сustomer.append(order)
+
+    pre_page = 1
+    orders_no_customer_paginator = Paginator(orders_no_сustomer, pre_page)
+    orders_customer_paginator = Paginator(orders_сustomer, pre_page)
+    page_customer = data_get.pop('page_customer', ['1'])[0]
+    page_no_customer = data_get.pop('page_no_customer', ['1'])[0]
+    customer_tab = data_get.pop('customer_tab', ['1'])[0]
+    print(customer_tab)
+    page_obj_customer = orders_customer_paginator.get_page(page_customer)
+    page_obj_no_customer = orders_no_customer_paginator.get_page(page_no_customer)
+    request.GET = data_get
     context = {
-        'orders_сustomer': orders_сustomer,
-        'orders_no_сustomer': orders_no_сustomer,
-        'data_filter': data_filter_template
+        'orders_customer': page_obj_customer,
+        'orders_no_customer': page_obj_no_customer,
+        'data_filter': data_filter_template,
+        'customer_tab': customer_tab,
     }
     return render(request, 'order/index.html', context)
