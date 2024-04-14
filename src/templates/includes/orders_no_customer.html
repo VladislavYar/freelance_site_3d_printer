@@ -1,0 +1,86 @@
+{% load static %}
+{% load thumbnail %}
+
+{% for order in orders_no_customer %}
+    <div class="shadow col-12 border mt-3 mb-2">
+        <div class="row">
+            <div class="col-8 col-lg-9 col-xl-10 border-end">
+                <div class="col-12">
+                    <div class="text-center ps-3 fs-4">Описание</div>
+                    <p class="text-break ps-3 pe-3">{{ order.description }}</p>
+                </div>
+                {% with order.images.all as images %}
+                    {% if images %}
+                        <div class="col-12 border-top">
+                            <div id="imagesOrder{{ order.id }}" class="carousel pt-2 pb-2 slide w-50 mx-auto" data-bs-ride="carousel">
+                                <div class="carousel-indicators">
+                                    {% for image in images %}
+                                        <button
+                                        type="button" data-bs-target="#imagesOrder{{ order.id }}" data-bs-slide-to="{{  forloop.counter0 }}" {% if forloop.counter0 == 0 %}class="active" aria-current="true"{% endif %} aria-label="Slide {{  forloop.counter0 }}">
+                                        </button>
+                                    {% endfor %}
+                                </div>
+                                <div class="carousel-inner">
+                                    {% for image in images %}
+                                        {% thumbnail image.image "500x500" crop="center" upscale=True  as im %}
+                                            <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
+                                                <img src="{{ im.url }}" class="d-block w-100" alt="заказ">
+                                            </div>
+                                        {% endthumbnail %}
+                                    {% endfor %}
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#imagesOrder{{ order.id }}" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#imagesOrder{{ order.id }}" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="col-4 col-lg-3 col-xl-2 pt-2 pb-2 pe-4">
+                <div class="col-12 text-center">
+                    {% static 'images/no_user_picture_130x130.jpg' as NO_USER_PICTURE %}
+                    {% if order.user.user_picture %}
+                        {% thumbnail order.user.user_picture "120x120" crop="center" upscale=True  as im %}
+                            <img class="img-thumbnail" src="{{ im.url }}" alt="фото профиля">
+                        {% endthumbnail %}
+                    {% else %}
+                            <img class="img-thumbnail" src="{{ NO_USER_PICTURE }}" alt="фото профиля">
+                    {% endif %}
+                </div>
+                <div class="col-12 text-center">
+                    <p class="text-break">{{ order.user.username }}</p>
+                </div>
+                <div class="col-12 text-center">
+                    <div><strong>Оплата</strong></div>
+                    <p class="text-break">{{ order.price }}p.</p>
+                </div>
+                <div class="col-12 text-center">
+                    <div><strong>Город</strong></div>
+                    <p class="text-break">{{ order.city|title }}</p>
+                </div>
+                <div class="col-12 text-center">
+                    <div><strong>Дата</strong></div>
+                    <p class="text-break">{{ order.date }}</p>
+                </div>
+                <div class="col-12 text-center">
+                    <a
+                    {% if request.user.is_authenticated %}
+                        href="#"
+                    {% else %}
+                        href="#"
+                        data-bs-toggle="modal" data-bs-target="#loginModal"
+                    {% endif %}
+                    class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover text-break small">
+                    Подробнее...
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

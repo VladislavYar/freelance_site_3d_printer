@@ -77,15 +77,16 @@ def index(request: WSGIRequest) -> HttpResponse:
             continue
         orders_no_сustomer.append(order)
 
-    pre_page = 1
+    pre_page = 2
     orders_no_customer_paginator = Paginator(orders_no_сustomer, pre_page)
     orders_customer_paginator = Paginator(orders_сustomer, pre_page)
     page_customer = data_get.pop('page_customer', ['1'])[0]
     page_no_customer = data_get.pop('page_no_customer', ['1'])[0]
     customer_tab = data_get.pop('customer_tab', ['1'])[0]
-    print(customer_tab)
     page_obj_customer = orders_customer_paginator.get_page(page_customer)
-    page_obj_no_customer = orders_no_customer_paginator.get_page(page_no_customer)
+    page_obj_no_customer = orders_no_customer_paginator.get_page(
+        page_no_customer
+    )
     request.GET = data_get
     context = {
         'orders_customer': page_obj_customer,
