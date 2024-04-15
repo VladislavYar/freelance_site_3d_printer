@@ -1,0 +1,86 @@
+{% load static %}
+
+{% load user_filters %}
+
+<div class="modal fade" id="formOrder"{% if not form_valid %} errors="true"{% endif %} tabindex="-1" aria-labelledby="formOrderLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-secondary" id="formOrderLabel">Создание заказа/предложения</h5>
+                <div data-bs-theme="dark">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-row">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="{{ form.city.auto_id }}" class="form-label">{{ form.city.label }}</label>
+                                    {% if form.city.errors %}
+                                        {{ form.city|addclass:"form-control is-invalid" }}
+                                    {% else %}
+                                        {{ form.city }}
+                                    {% endif %}
+                                <div class="invalid-feedback">
+                                    {{ form.city.errors }}
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="{{ form.price.auto_id }}" class="form-label">{{ form.price.label }}</label>
+                                {% if form.price.errors %}
+                                    {{ form.price|addclass:"form-control is-invalid" }}
+                                {% else %}
+                                    {{ form.price }}
+                                {% endif %}
+                                <div class="invalid-feedback">
+                                    {{ form.price.errors }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <label for="{{ form.description.auto_id }}" class="form-label">{{ form.description.label }}</label>
+                            {% if form.description.errors %}
+                                {{ form.description|addclass:"form-control is-invalid" }}
+                            {% else %}
+                                {{ form.description }}
+                            {% endif %}
+                            <div class="invalid-feedback">
+                                {{ form.description.errors }}
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="form-check">
+                                {{ form.is_customer }}
+                                <label class="form-check-label" for="{{ form.is_customer.auto_id }}">
+                                    {{ form.is_customer.label }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <label for="{{ form.images.auto_id }}" class="form-label">{{ form.images.label }}</label>
+                            {% if form.images.errors %}
+                                {{ form.images|addclass:"form-control is-invalid"  }}
+                            {% else %}
+                                {{ form.images }}
+                            {% endif %}   
+                            <div class="invalid-feedback" id="images_errors">
+                                {{ form.images.errors }}
+                            </div>
+                            <div id="orderImageIndicators" class="carousel slide mt-3 img" data-bs-interval="false" data-ride="carousel" data-pause="hover">
+                                {% static 'images/no_data.jpg' as NO_DATA %}
+                                <img class="d-block w-100 border border-1 rounded img" src="{{ NO_DATA }}" alt="нет данных">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-dark">
+                    <div class="col-12 mt-3 text-center">
+                        <button class="btn btn-outline-success" type="submit">Сохранить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

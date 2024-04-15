@@ -98,3 +98,15 @@ pre {
 .button-сenter {
     border-radius: 0px 0px 0px 0px;
 }
+
+.img-size {
+    height: 400px;
+    object-fit: cover;
+}
+
+.img {
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }

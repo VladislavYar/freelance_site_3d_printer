@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Вы вышли из системы{% endblock %}
 
 {% block col_count_2 %}{% endblock %}
 
 {% block content %}
-    <h1 class="text-center">Вы вышли из системы</h1>
+    <h1 class="text-center">Вы вышли из своей учётной записи. Ждём вас снова!</h1>
     <hr>
-    <p class="text-center">Вы вышли из своей учётной записи. Ждём вас снова!</p>
+    <div class="col-12">
+        <img class="img-fluid" src="{% static '/images/logged_out.jpg' %}">
+    </div>
 {% endblock %}

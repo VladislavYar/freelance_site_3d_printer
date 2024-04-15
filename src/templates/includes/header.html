@@ -13,9 +13,9 @@
         <div class="navbar-collapse collapse" id="navbarControl" style="">
             <ul class="navbar-nav me-auto mb-2 ms-5 mb-lg-0 w-100 justify-content-center">
                 <li class="nav-item">
-                    {% url 'order:index' as index_url %}
+                    {% url 'order:index' as URL_ORDER %}
                     <a
-                     class="nav-link {% if request.path == index_url %}active{% endif %}" aria-current="page" href="{% url 'order:index' %}">
+                     class="nav-link {% if request.path == URL_ORDER %}active{% endif %}" aria-current="page" href="{{ URL_ORDER }}">
                      Главная
                     </a>
                 </li>
@@ -28,6 +28,11 @@
             </ul>
             <div class="d-flex">
                 {% if user.is_authenticated %}
+                    {% if request.path == URL_ORDER %}
+                        <button type="button" class="btn btn-outline-success rounded-pill mt-1 btn-sm d-none d-lg-block" data-bs-toggle="modal" data-bs-target="#formOrder">
+                            Создать
+                        </button>
+                    {% endif %}
                     {% comment %}
                         получаем URL регистрации-входа-профиля, сравниваем их
                         с текущей ссылкой, если совпадает, отключаем кнопку
@@ -48,7 +53,13 @@
                                 <img class="rounded-circle" src="{{ NO_USER_PICTURE }}" alt="Фото профиля" title="{{ user.username }}">
                         {% endif %}
                     </a>
-                    <a class="btn btn-outline-danger ms-2 mt-1 me-5 h-75 btn-sm" href="{% url 'account:logout' %}">Выйти</a>
+                    <a class="btn btn-outline-danger ms-2 mt-1 me-2 h-75 btn-sm d-lg-none" href="{% url 'account:logout' %}">Выйти</a>
+                    <a class="btn btn-outline-danger ms-2 mt-1 me-2 h-75 btn-sm d-none d-lg-block" href="{% url 'account:logout' %}">Выйти</a>
+                    {% if request.path == URL_ORDER %}
+                        <button type="button" class="btn btn-outline-success rounded-pill mt-1 h-75 btn-sm d-lg-none" data-bs-toggle="modal" data-bs-target="#formOrder">
+                            Создать
+                        </button>
+                    {% endif %}
                 {% else %}
                     {% url 'account:signup' as URL_SIGNUP %}
                     {% url 'account:login' as URL_LOGIN %}
