@@ -1,6 +1,9 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+
+from order.constants import PRICE_MAX, PRICE_MIN
 
 
 User = get_user_model()
@@ -13,14 +16,17 @@ class Order(models.Model):
         verbose_name=_('Заказчик/исполнитель'),
         help_text=_('Заказчик/исполнитель')
         )
-    is_сustomer = models.BooleanField(
+    is_customer = models.BooleanField(
         verbose_name=_('Заказчик'), help_text=_('Заказчик')
         )
     description = models.TextField(
         verbose_name=_('Описание'), help_text=_('Описание')
         )
     price = models.PositiveIntegerField(
-        verbose_name=_('Оплата'), help_text=_('Оплата')
+        verbose_name=_('Оплата'), help_text=_('Оплата'),
+        validators=(
+            MinValueValidator(PRICE_MIN), MaxValueValidator(PRICE_MAX),
+            )
         )
     city = models.CharField(
         max_length=50, verbose_name=_('Город выполения'),
@@ -32,11 +38,12 @@ class Order(models.Model):
         )
 
     class Meta:
+        ordering = ('-id', '-date',)
         verbose_name = _('Заказ/предложение')
         verbose_name_plural = _('Заказы/предложения')
 
     def __str__(self) -> str:
-        return f'{self.user} - {self.is_сustomer} - {self.price}'
+        return f'{self.user} - {self.is_customer} - {self.price}'
 
 
 class OrderImage(models.Model):

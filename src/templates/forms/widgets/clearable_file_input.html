@@ -1,14 +1,15 @@
 {% load thumbnail %}
+{% load static %}
 
 {% if widget.is_initial %}
     {{ widget.initial_text|lower }} 
-    <div>
+    <div class="row">
         {% thumbnail widget.value "700x700" crop="center" upscale=True  as im %}
-            <img class="img-thumbnail" src="{{ im.url }}">
+            <img id="id_user_image" class="img rounded-4" src="{{ im.url }}">
         {% endthumbnail %}
     </div>
     {% if not widget.required %}
-        <div>
+        <div class="mt-1">
             <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"{% if widget.attrs.disabled %} disabled{% endif %}>
             <label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
         </div>
@@ -17,12 +18,12 @@
         <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
     </div>
 {% else %}
-    <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+    на данный момент
+    {% static 'images/no_user_picture_700x700.jpg' as NO_USER_PICTURE %}
+    <div class="row">
+        <img id="id_user_image" class="img rounded-4" src="{{ NO_USER_PICTURE }}">
+    </div>
+    <div class="mt-3">
+        <input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+    </div>
 {% endif %}
-
-
-{% thumbnail image.image "300" as im %}
-    <a href="{{ image.image.url }}">
-        <img src="{{ im.url }}" class="image-detail">
-    </a>
-{% endthumbnail %}

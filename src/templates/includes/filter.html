@@ -1,9 +1,11 @@
 {% if data_filter.min_max_price.price__min != data_filter.min_max_price.price__max %}
     <div class="text-info mt-2 fs-5">Оплата</div>
     <div class="col-12 text-center">
-        <div id="min-price" style="display: none;">{{ data_filter.min_max_price.price__min }}</div>
-        <div id="max-price" style="display: none;">{{ data_filter.min_max_price.price__max }}</div>
-        <input type="text" id="price" readonly="" disabled class="text-center text-white border-0 bg-dark">
+        <input
+         min-price="{{ data_filter.min_max_price.price__min }}"
+         max-price="{{ data_filter.min_max_price.price__max }}"
+         type="text" id="price" readonly="" disabled class="text-center text-white border-0 bg-dark"
+         >
         <div id="slider-range" class="mt-2 castom-shadow castom-shadow-hover"></div>
     </div>
 {% endif %}
