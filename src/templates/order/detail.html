@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}
+    {% if order.is_customer %}Заказ{% else %}Предложение{% endif %} {{ order.id }}
+{% endblock %}
+{% block col_count_2 %}
+{% endblock %}
+{% block col_count_1 %}
+    <div class="row g-0">
+        {% if user == order.user %}
+            {% include 'includes/order_update_delete.html' %}
+        {% endif %}
+        <div class="row g-0">
+            <div class="col-7 col-lg-9 border-end pb-2">
+                <p class="text-center col-12 fs-3 pt-2">Описание</p>
+                <div class="col-12 text-break ps-4 pe-4">{{ order.description }}</div>
+            </div>
+            <div class="col-5 col-lg-3">
+                <div class="col-12 text-center pt-3">
+                    {% static 'images/no_user_picture_130x130.jpg' as NO_USER_PICTURE %}
+                    {% if order.user.user_picture %}
+                        {% thumbnail order.user.user_picture "120x120" crop="center" upscale=True  as im %}
+                            <img class="img-thumbnail" src="{{ im.url }}" alt="фото профиля">
+                        {% endthumbnail %}
+                    {% else %}
+                            <img class="img-thumbnail" src="{{ NO_USER_PICTURE }}" alt="фото профиля">
+                    {% endif %}
+                </div>
+                <div class="col-12 text-center">
+                    <p class="text-break">{{ order.user.username }}</p>
+                </div>
+                <p class="text-center col-12 fs-5 border-top">Связаться</p>
+                {% if order.user.phone %}
+                    <div class="col-12 text-center ps-2 pe-2">
+                        <p class="text-break">
+                            <strong>Телефон:</strong> <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="tel:{{ order.user.phone }}">{{ order.user.phone }}</a>
+                        </p>
+                    </div>
+                {% endif %}
+                <div class="col-12 text-center ps-2 pe-2">
+                    <p class="text-break">
+                        <strong>Email:</strong> <a class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="mailto:{{ order.user.email }}">{{ order.user.email }}</a>
+                    </p>
+                </div>
+                <div class="col-12 text-center ps-2 pe-2 pt-2 border-top">
+                    <p class="text-break">
+                        <strong>Оплата:</strong> {{ order.price }} р.
+                    </p>
+                </div>
+                <div class="col-12 text-center ps-2 pe-2">
+                    <p class="text-break">
+                        <strong>Город:</strong> {{ order.city }}
+                    </p>
+                </div>
+                <div class="col-12 text-center ps-2 pe-2">
+                    <p class="text-break">
+                        <strong>Дата:</strong> {{ order.date }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% if order.images.all %}
+            <p class="text-center col-12 fs-3 border-top">Изображения</p>
+            <div class="row justify-content-center">
+                {% for image in order.images.all %}
+                    {% thumbnail image.image "500x500" crop="center" upscale=True  as im %}
+                        <div class="col-6 col-lg-3 mt-2">
+                            <img src="{{ im.url }}" class="img-thumbnail" alt="Изображение {% if order.is_customer %}заказа{% else %}преедложения{% endif %}">
+                        </div>
+                    {% endthumbnail %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -122,3 +122,5 @@ YEARS_150_IN_DAYS = 54750
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DAYS_LIFE_ORDER = 30

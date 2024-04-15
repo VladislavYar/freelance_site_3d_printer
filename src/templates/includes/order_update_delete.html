@@ -1,0 +1,25 @@
+<div class="bg-dark text-center pt-3 pb-3">
+    <button type="button" class="btn btn-outline-info me-2">Изменить</button>
+    <button type="button" class="btn btn-outline-danger ms-2" data-bs-toggle="modal" data-bs-target="#deleteModal">
+        Удалить
+    </button>
+    {% url 'order:order-delete' pk=order.id %}
+</div>
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-dark">
+          <h5 class="modal-title text-secondary" id="deleteModalLabel">Удаление {% if order.is_customer %}заказа{% else %}предложения{% endif %}</h5>
+          <div data-bs-theme="dark">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body">
+            Вы точно хотите удалить {% if order.is_customer %}заказ{% else %}предложение{% endif %}?
+        </div>
+        <div class="modal-footer bg-dark">
+          <a href="{% url 'order:order-delete' pk=order.id %}" class="btn btn-outline-danger">Да</a>
+        </div>
+      </div>
+    </div>
+</div>
