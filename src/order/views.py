@@ -145,14 +145,69 @@ def index(request: WSGIRequest) -> HttpResponse:
     return render(request, 'order/index.html', context)
 
 
+def get_method_order(
+        request: WSGIRequest,
+        order: Order,
+        form_valid: bool,
+        images: OrderImage
+        ) -> HttpResponse:
+    form = OrderForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=order,
+        )
+    """Обрабатывает GET-запрос детального заказа/предложения."""
+    return render(
+        request,
+        'order/detail.html', {
+                            'order': order,
+                            'form': form,
+                            'form_valid': form_valid,
+                            'images': images,
+                            }
+    )
+
+
+def post_method_order(
+        request: WSGIRequest,
+        order: Order,
+        images: OrderImage,
+        pk: int
+        ) -> HttpResponse:
+    """Обрабатывает POST-запрос детального заказа/предложения."""
+    form = OrderForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=order,
+        )
+    if not form.is_valid():
+        return render(
+            request,
+            'order/detail.html', {
+                                'order': order,
+                                'form': form,
+                                'form_valid': False,
+                                'images': images,
+                                }
+        )
+    if request.FILES:
+        images.delete()
+        with transaction.atomic():
+            for image in request.FILES.getlist('images'):
+                OrderImage(order=order, image=image).save()
+    form.save()
+    return redirect('order:order', pk=pk)
+
+
 @login_required
 def order(request: WSGIRequest, pk: int) -> HttpResponse:
     """View заказа/предложения детально."""
     order = get_object_or_404(Order, id=pk)
-    context = {
-        'order': order,
-    }
-    return render(request, 'order/detail.html', context)
+    images = order.images.all()
+    form_valid = True
+    if request.method != 'POST':
+        return get_method_order(request, order, form_valid, images)
+    return post_method_order(request, order, images, pk)
 
 
 @login_required

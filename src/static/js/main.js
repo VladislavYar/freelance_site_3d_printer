@@ -72,6 +72,10 @@ function setOrderImage() {
   images = $("#id_images")[0].files;
   let length = images.length;
   let carousel = '<img class="d-block w-100 img border border-1 rounded" src="/static/images/no_data.jpg" alt="нет данных">';
+  let old_carousel = $("#orderImageIndicators");
+  if (old_carousel.attr("update") === "true") {
+    carousel = old_carousel.html();
+  }
   if (length) {
   let carousel_indicators = '<div class="carousel-indicators">';
   let carousel_inner = '<div class="carousel-inner">';
