@@ -1,9 +1,10 @@
 from django.db import transaction
 from django.db.models import Max, Min
 from django.core.handlers.wsgi import WSGIRequest
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http.response import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import get_user_model
 from transliterate import translit
 
@@ -142,3 +143,23 @@ def index(request: WSGIRequest) -> HttpResponse:
         'form_valid': form_valid,
     }
     return render(request, 'order/index.html', context)
+
+
+@login_required
+def order(request: WSGIRequest, pk: int) -> HttpResponse:
+    """View заказа/предложения детально."""
+    order = get_object_or_404(Order, id=pk)
+    context = {
+        'order': order,
+    }
+    return render(request, 'order/detail.html', context)
+
+
+@login_required
+def order_delete(request: WSGIRequest, pk: int) -> HttpResponse:
+    """View удаления заказа/предложения."""
+    order = get_object_or_404(Order, id=pk)
+    if order.user == request.user:
+        order.delete()
+        return redirect('order:index')
+    return redirect('order:order', pk=pk)

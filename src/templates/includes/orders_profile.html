@@ -1,0 +1,74 @@
+<div class="row border-top border-bottom mt-5">
+    <div class="col-12 col-xxl-6 border-start border-end">
+        <div class="col-12 text-center fs-3 border-bottom">Заказы</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Описание</th>
+                    <th class="text-center">Оплата</th>
+                    <th class="text-center">Город</th>
+                    <th class="text-center">Дней осталось</th>
+                </tr>
+           </thead>
+            <tbody>
+                {% for order in orders_customer %}
+                    <tr>
+                        <td class="text-center">
+                            <a 
+                             class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                             href="{% url 'order:order' pk=order.id %}"
+                             >
+                             {{ order.description|truncatechars:10 }}
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            {{ order.price }} р.
+                        </td>
+                        <td class="text-center">
+                            {{ order.city|truncatechars:10 }}
+                        </td>
+                        <td class="text-center">
+                            {{ order.days_left }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-12 col-xxl-6 border-start border-end">
+        <div class="col-12 text-center fs-3 border-bottom">Предложения</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Описание</th>
+                    <th class="text-center">Оплата</th>
+                    <th class="text-center">Город</th>
+                    <th class="text-center">Дней осталось</th>
+                </tr>
+           </thead>
+            <tbody>
+                {% for order in orders_no_customer %}
+                    <tr>
+                        <td class="text-center">
+                            <a 
+                             class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+                             href="{% url 'order:order' pk=order.id %}"
+                             >
+                             {{ order.description|truncatechars:6 }}
+                            </a>
+                        </td>
+                        <td class="text-center">
+                            {{ order.price }} р.
+                        </td>
+                        <td class="text-center">
+                            {{ order.city|truncatechars:6 }}
+                        </td>
+                        <td class="text-center">
+                            {{ order.days_left }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<div>
