@@ -33,6 +33,13 @@
                     <p class="text-break">{{ order.user.username }}</p>
                 </div>
                 <p class="text-center col-12 fs-5 border-top">Связаться</p>
+                {% if order.user.first_name %}
+                    <div class="col-12 text-center ps-2 pe-2">
+                        <p class="text-break">
+                            <strong>Имя:</strong> {{ order.user.first_name }}
+                        </p>
+                    </div>
+                {% endif %}
                 {% if order.user.phone %}
                     <div class="col-12 text-center ps-2 pe-2">
                         <p class="text-break">

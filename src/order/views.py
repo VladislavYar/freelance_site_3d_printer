@@ -23,14 +23,14 @@ def get_data_filter_template(user: ClassUser) -> dict:
     if user.is_authenticated:
         user_id = user.id
     users = User.objects.filter(
-        id__in=Order.objects.all().values_list('user', flat=True).distinct()
+        id__in=set(Order.objects.all().values_list('user', flat=True).distinct())
         ).exclude(id=user_id)
     min_max_price = Order.objects.exclude(user=user_id).aggregate(
         Min('price'), Max('price')
         )
-    cities = list(
+    cities = set(
         Order.objects.all().exclude(
-            user=user_id).values_list('city', flat=True).distinct()
+            user=user_id).values_list('city', flat=True)
         )
     return {'users': users, 'min_max_price': min_max_price, 'cities': cities}
 
