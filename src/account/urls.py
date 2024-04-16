@@ -9,6 +9,7 @@ from django.urls import path
 
 from account.views import SignUpView, profile, profile_update
 
+
 app_name = 'account'
 
 urlpatterns = [

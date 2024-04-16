@@ -23,11 +23,14 @@ def get_data_filter_template(user: ClassUser) -> dict:
     if user.is_authenticated:
         user_id = user.id
     users = User.objects.filter(
-        id__in=Order.objects.all().values_list('user', flat=True).distinct()
+        id__in=set(Order.objects.all().values_list('user', flat=True).distinct())
         ).exclude(id=user_id)
-    min_max_price = Order.objects.aggregate(Min('price'), Max('price'))
-    cities = list(
-        Order.objects.all().values_list('city', flat=True).distinct()
+    min_max_price = Order.objects.exclude(user=user_id).aggregate(
+        Min('price'), Max('price')
+        )
+    cities = set(
+        Order.objects.all().exclude(
+            user=user_id).values_list('city', flat=True)
         )
     return {'users': users, 'min_max_price': min_max_price, 'cities': cities}
 
@@ -145,14 +148,71 @@ def index(request: WSGIRequest) -> HttpResponse:
     return render(request, 'order/index.html', context)
 
 
+def get_method_order(
+        request: WSGIRequest,
+        order: Order,
+        form_valid: bool,
+        images: OrderImage
+        ) -> HttpResponse:
+    form = OrderForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=order,
+        )
+    """Обрабатывает GET-запрос детального заказа/предложения."""
+    return render(
+        request,
+        'order/detail.html', {
+                            'order': order,
+                            'form': form,
+                            'form_valid': form_valid,
+                            'images': images,
+                            }
+    )
+
+
+def post_method_order(
+        request: WSGIRequest,
+        order: Order,
+        images: OrderImage,
+        pk: int
+        ) -> HttpResponse:
+    """Обрабатывает POST-запрос детального заказа/предложения."""
+    form = OrderForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=order,
+        )
+    if not form.is_valid():
+        return render(
+            request,
+            'order/detail.html', {
+                                'order': order,
+                                'form': form,
+                                'form_valid': False,
+                                'images': images,
+                                }
+        )
+    if request.FILES:
+        with transaction.atomic():
+            for image in request.FILES.getlist('images'):
+                OrderImage(order=order, image=image).save()
+    with transaction.atomic():
+        for image_id in form.get_delete_images_id():
+            images.get(id=image_id).delete()
+    form.save()
+    return redirect('order:order', pk=pk)
+
+
 @login_required
 def order(request: WSGIRequest, pk: int) -> HttpResponse:
     """View заказа/предложения детально."""
     order = get_object_or_404(Order, id=pk)
-    context = {
-        'order': order,
-    }
-    return render(request, 'order/detail.html', context)
+    images = order.images.all()
+    form_valid = True
+    if request.method != 'POST':
+        return get_method_order(request, order, form_valid, images)
+    return post_method_order(request, order, images, pk)
 
 
 @login_required

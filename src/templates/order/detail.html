@@ -33,6 +33,13 @@
                     <p class="text-break">{{ order.user.username }}</p>
                 </div>
                 <p class="text-center col-12 fs-5 border-top">Связаться</p>
+                {% if order.user.first_name %}
+                    <div class="col-12 text-center ps-2 pe-2">
+                        <p class="text-break">
+                            <strong>Имя:</strong> {{ order.user.first_name }}
+                        </p>
+                    </div>
+                {% endif %}
                 {% if order.user.phone %}
                     <div class="col-12 text-center ps-2 pe-2">
                         <p class="text-break">
@@ -47,7 +54,7 @@
                 </div>
                 <div class="col-12 text-center ps-2 pe-2 pt-2 border-top">
                     <p class="text-break">
-                        <strong>Оплата:</strong> {{ order.price }} р.
+                        <strong>Оплата:</strong> {{ order.price }}р.
                     </p>
                 </div>
                 <div class="col-12 text-center ps-2 pe-2">
@@ -64,10 +71,10 @@
         </div>
         {% if order.images.all %}
             <p class="text-center col-12 fs-3 border-top">Изображения</p>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center g-0 ps-2 pe-2">
                 {% for image in order.images.all %}
                     {% thumbnail image.image "500x500" crop="center" upscale=True  as im %}
-                        <div class="col-6 col-lg-3 mt-2">
+                        <div class="col-6 col-lg-3 mb-2 ps-1 pe-1">
                             <img src="{{ im.url }}" class="img-thumbnail" alt="Изображение {% if order.is_customer %}заказа{% else %}преедложения{% endif %}">
                         </div>
                     {% endthumbnail %}

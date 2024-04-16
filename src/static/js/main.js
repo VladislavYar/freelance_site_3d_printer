@@ -1,6 +1,7 @@
-const old_cities = $("#cities").val();
-const old_users = $("#users").val();
+const old_cities = $("#cities").val() ? $("#cities").val() : [];
+const old_users = $("#users").val() ? $("#users").val() : [];
 const max_files = $("#id_images").attr("max-files");
+const no_image_carousel = '<img class="d-block w-100 img border border-1 rounded" src="/static/images/no_data.jpg" alt="нет данных">';
 const old_src_user_image = $("#id_user_image").attr("src");
 let params = new URLSearchParams(window.location.search);
 let old_choice_min = Number($("#price").attr("min-price")); 
@@ -32,9 +33,11 @@ function filterOrders() {
 function activateButtonFilter(
   old_cities, old_users
 ) {
+  let new_cities = $("#cities").val() ? $("#cities").val() : [];
+  let new_users = $("#users").val() ? $("#users").val() : [];
   if (
-    old_cities.toString() != $("#cities").val().toString() ||
-    old_users.toString() != $("#users").val().toString() ||
+    old_cities.toString() != new_cities.toString() ||
+    old_users.toString() != new_users.toString() ||
     old_choice_min != new_choice_min ||
     old_choice_max != new_choice_max
   )
@@ -51,17 +54,19 @@ function showModal() {
 
 function validationPrice() {
   let valid_var = $(this).val();
-  max_price
   valid_var = valid_var.replace(/[^0-9]/g, "").replace(/^0+/, "");
   $(this).val(valid_var);
 }
 
 function validationImages() {
   let images = $("#id_images");
-  if (images[0].files.length > max_files) {
+  let del_images = $(".delete_image:checked").length;
+  let old_images = $(".delete_image").length;
+  if ((images[0].files.length + old_images - del_images) > max_files) {
     images.val(null);
+    $("#orderNewImageIndicators").html(no_image_carousel);
     images.attr("class", "form-control is-invalid")
-    $("#images_errors").html("<ul><li>Изображений должно быть до 4.</li></ul>");
+    $("#images_errors").html("<ul><li>Изображений должно быть не больше 4.</li></ul>");
     return
   }
   images.attr("class", "form-control");
@@ -71,30 +76,30 @@ function validationImages() {
 function setOrderImage() {
   images = $("#id_images")[0].files;
   let length = images.length;
-  let carousel = '<img class="d-block w-100 img border border-1 rounded" src="/static/images/no_data.jpg" alt="нет данных">';
+  let carousel = no_image_carousel;
   if (length) {
   let carousel_indicators = '<div class="carousel-indicators">';
   let carousel_inner = '<div class="carousel-inner">';
   for (i = 0; i < length; i++) {
     let src = URL.createObjectURL(images[i]);
     if (i === 0) {
-      carousel_indicators += '<button type="button" data-bs-target="#orderImageIndicators" ' +
+      carousel_indicators += '<button type="button" data-bs-target="#orderNewImageIndicators" ' +
                               'data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>';
       carousel_inner += '<div class="carousel-item active"><img src="' + src + '" class="d-block w-100 img border border-1 rounded" alt="Изображение ' + (i + 1) + '"></div>'
     } else {
-      carousel_indicators += '<button type="button" data-bs-target="#orderImageIndicators" data-bs-slide-to="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>';
+      carousel_indicators += '<button type="button" data-bs-target="#orderNewImageIndicators" data-bs-slide-to="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>';
       carousel_inner += '<div class="carousel-item"><img src="' + src + '" class="d-block w-100 img border border-1 rounded" alt="Изображение ' + (i + 1) + '"></div>';
     }
   }
   carousel_indicators += '</div>';
   carousel_inner += '</div>';
   carousel = carousel_indicators + carousel_inner + 
-              '<button class="carousel-control-prev" type="button" data-bs-target="#orderImageIndicators" data-bs-slide="prev">' +
+              '<button class="carousel-control-prev" type="button" data-bs-target="#orderNewImageIndicators" data-bs-slide="prev">' +
               '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>' +
-              '</button><button class="carousel-control-next" type="button" data-bs-target="#orderImageIndicators" data-bs-slide="next">' +
+              '</button><button class="carousel-control-next" type="button" data-bs-target="#orderNewImageIndicators" data-bs-slide="next">' +
               '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button>';
   }
-  $("#orderImageIndicators").html(carousel);
+  $("#orderNewImageIndicators").html(carousel);
 }
 
 
@@ -136,5 +141,5 @@ $(window).on("load", showModal);
 $("#id_price").on("input", validationPrice);
 $("#id_images").on("change", validationImages);
 $("#id_images").on("change", setOrderImage);
-$("#id_images").on("change", setOrderImage);
 $("#id_user_picture").on("change", setUserImage);
+$(".delete_image").change(validationImages);
