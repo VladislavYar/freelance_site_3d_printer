@@ -1,3 +1,5 @@
+import re
+
 from django.db import transaction
 from django.db.models import Max, Min
 from django.core.handlers.wsgi import WSGIRequest
@@ -25,9 +27,12 @@ def get_data_filter_template(user: ClassUser) -> dict:
     users = User.objects.filter(
         id__in=Order.objects.all().values_list('user', flat=True).distinct()
         ).exclude(id=user_id)
-    min_max_price = Order.objects.aggregate(Min('price'), Max('price'))
+    min_max_price = Order.objects.exclude(user=user_id).aggregate(
+        Min('price'), Max('price')
+        )
     cities = list(
-        Order.objects.all().values_list('city', flat=True).distinct()
+        Order.objects.all().exclude(
+            user=user_id).values_list('city', flat=True).distinct()
         )
     return {'users': users, 'min_max_price': min_max_price, 'cities': cities}
 

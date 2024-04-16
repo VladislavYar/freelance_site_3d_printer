@@ -74,10 +74,11 @@
                                     {% static 'images/no_data.jpg' as NO_DATA %}
                                     <img class="d-block w-100 border border-1 rounded img" src="{{ NO_DATA }}" alt="нет данных">
                                 {% else %}
-                                    <div class="carousel-indicators">
+                                    <div class="carousel-indicators pb-4">
                                         {% for image in images %}
                                             <button
                                              type="button" data-bs-target="#orderImageIndicators" data-bs-slide-to="{{  forloop.counter0 }}" {% if forloop.counter0 == 0 %}class="active" aria-current="true"{% endif %} aria-label="Slide {{  forloop.counter0 }}">
+                                             
                                             </button>
                                         {% endfor %}
                                     </div>
@@ -86,6 +87,18 @@
                                             {% thumbnail image.image "500x500" crop="center" upscale=True  as im %}
                                                 <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
                                                     <img src="{{ im.url }}" class="d-block w-100" alt="заказ">
+                                                    <div class="form-check mt-2 w-25 mx-auto delete_image">
+                                                        <input
+                                                         type="checkbox"
+                                                         name="delete_image_{{  forloop.counter0 }}"
+                                                         class="form-check-input"
+                                                         aria-describedby="delete_image_helptext"
+                                                         id="delete_image_{{  forloop.counter0 }}"
+                                                        >
+                                                        <label class="form-check-label" for="delete_image_{{  forloop.counter0 }}">
+                                                            Удалить
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             {% endthumbnail %}
                                         {% endfor %}

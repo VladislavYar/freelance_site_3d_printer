@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -50,10 +52,26 @@ class OrderForm(forms.ModelForm):
                 ),
         }
 
+    def get_delete_images_key(self):
+        """Возвращает ключи для удаления."""
+        regex = re.compile(r'^delete_image_[0-4]{1}$')
+        return [
+            int(delete_image[-1]) for delete_image in filter(
+                regex.match, self.cleaned_data.keys()
+                )
+            ]
+
     def clean_images(self):
+        """Валидация сохранения изображений."""
         images = self.cleaned_data.get('images')
-        if len(images) > FILES_MAX:
+        count_delete_keys = len(self.get_delete_images_key())
+        count_order_images = 0
+        if self.instance.id:
+            count_order_images = self.instance.images.count()
+        count_image = count_order_images - count_delete_keys + len(images)
+        if count_image > FILES_MAX:
             raise ValidationError(
-                _(f'Изображений должно быть не боль {FILES_MAX}.')
+                _('Изображений должно быть не больше '
+                  f'{FILES_MAX - count_delete_keys}.')
                 )
         return images
