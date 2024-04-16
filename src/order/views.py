@@ -1,5 +1,3 @@
-import re
-
 from django.db import transaction
 from django.db.models import Max, Min
 from django.core.handlers.wsgi import WSGIRequest
@@ -196,10 +194,12 @@ def post_method_order(
                                 }
         )
     if request.FILES:
-        images.delete()
         with transaction.atomic():
             for image in request.FILES.getlist('images'):
                 OrderImage(order=order, image=image).save()
+    with transaction.atomic():
+        for image_id in form.get_delete_images_id():
+            images.get(id=image_id).delete()
     form.save()
     return redirect('order:order', pk=pk)
 
