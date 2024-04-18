@@ -48,9 +48,11 @@ pip install -r requirements.txt
 ```
 make project-init-dev # Для первого запуска.
 make project-start-dev # Для последующих.
+make celery-worker-start
+make celery-beat-start
 ```
 
 Теперь проект доступен по адресу http://localhost/
 
 ## Cтек проекта
-Python v3.11, Django, postgreSQL, Docker
+Python v3.12, Django, DRF, Celery, postgreSQL, Redis, Bootstrap, HTML, CSS, JavaScript, JQuery, Docker
