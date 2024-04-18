@@ -86,15 +86,15 @@
 {% if not user.is_authenticated %}
     <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-dark">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
                     <h5 class="modal-title text-secondary" id="loginModalLabel">Вход в учётную запись</h5>
                     <div data-bs-theme="dark">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
                 <form method="post" action="{% url 'account:login' %}">
-                    <div class="modal-body">
+                    <div class="modal-body bg-white">
                         {% csrf_token %}
                         {% for field in login_form %}
                             <div class="form-floating my-3">
@@ -103,7 +103,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="modal-footer justify-content-between bg-dark">
+                    <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-link link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                         data-bs-target="#resetModal" data-bs-toggle="modal" data-bs-dismiss="modal">
                             Забыли пароль?
@@ -117,15 +117,15 @@
 
     <div class="modal fade" id="resetModal" aria-hidden="true" aria-labelledby="resetModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-dark">
+            <div class="modal-content bg-dark">
+                <div class="modal-header">
                     <h5 class="modal-title text-secondary" id="resetModalToggleLabel">Восстановление пароля</h5>
                     <div data-bs-theme="dark">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                 </div>
                 <form method="post" action="{% url 'account:password_reset_form' %}">
-                    <div class="modal-body">
+                    <div class="modal-body bg-white">
                         {% csrf_token %}
                         {% for field in reset_form %}
                             <div class="form-floating my-3">
@@ -134,7 +134,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="modal-footer justify-content-between bg-dark">
+                    <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-link link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
                         data-bs-target="#loginModal" data-bs-toggle="modal" data-bs-dismiss="modal">
                             У вас уже есть учетная запись?

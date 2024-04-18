@@ -7,17 +7,17 @@
 </div>
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header bg-dark">
+      <div class="modal-content bg-dark">
+        <div class="modal-header">
           <h5 class="modal-title text-secondary" id="deleteModalLabel">Удаление {% if order.is_customer %}заказа{% else %}предложения{% endif %}</h5>
           <div data-bs-theme="dark">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
         </div>
-        <div class="modal-body">
+        <div class="modal-body bg-white fs-4 text-danger text-center">
             Вы точно хотите удалить {% if order.is_customer %}заказ{% else %}предложение{% endif %}?
         </div>
-        <div class="modal-footer bg-dark">
+        <div class="modal-footer">
           <a href="{% url 'order:order-delete' pk=order.id %}" class="btn btn-outline-danger">Да</a>
         </div>
       </div>

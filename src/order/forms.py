@@ -22,14 +22,15 @@ class OrderForm(forms.ModelForm):
             'is_customer',
             'description',
             'price',
-            'city',
+            'locality',
             'images',
             )
         widgets = {
-            'city': forms.TextInput(
+            'locality': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
-                    'placeholder': _('Укажите город'),
+                    'class': 'd-none',
+                    'readonly': 'readonly',
+                    'true': 'true',
                     }
                 ),
             'price': forms.TextInput(

@@ -1,4 +1,4 @@
-const old_cities = $("#cities").val() ? $("#cities").val() : [];
+const old_locations = $("#locations").val() ? $("#locations").val() : [];
 const old_users = $("#users").val() ? $("#users").val() : [];
 const max_files = $("#id_images").attr("max-files");
 const no_image_carousel = '<img class="d-block w-100 img border border-1 rounded" src="/static/images/no_data.jpg" alt="нет данных">';
@@ -20,23 +20,23 @@ function filterOrders() {
   price = Array.from(price.matchAll(regexp));
   let min_price = price[0] ? price[0] : Number($("#price").attr("min-price")); 
   let max_price = price[1] ? price[1] : Number($("#price").attr("max-price"));
-  let cities = $("#cities").val();
-  let users = $("#users").val();
+  let locations = $("#locations").val() ? $("#locations").val() : [];
+  let users = $("#users").val() ? $("#users").val() : [];
   let uri = "/" + "?min_price=" + min_price + "&max_price=" + max_price;
-  uri += cities != '' ? "&cities=" + cities : "";
-  uri += users != '' ? "&users=" + users : "";
+  uri += locations.length ? "&locations=" + locations : "";
+  uri += users.length ? "&users=" + users : "";
   uri += $(".show").attr("id") == "orders" ? "&customer_tab=1" : "&customer_tab=0";
   window.location.replace(uri);
 }
 
 
 function activateButtonFilter(
-  old_cities, old_users
+  old_locations, old_users
 ) {
-  let new_cities = $("#cities").val() ? $("#cities").val() : [];
+  let new_locations = $("#locations").val() ? $("#locations").val() : [];
   let new_users = $("#users").val() ? $("#users").val() : [];
   if (
-    old_cities.toString() != new_cities.toString() ||
+    old_locations.toString() != new_locations.toString() ||
     old_users.toString() != new_users.toString() ||
     old_choice_min != new_choice_min ||
     old_choice_max != new_choice_max
@@ -111,6 +111,49 @@ function setUserImage() {
     $("#id_user_image").attr("src", old_src_user_image);
 }
 
+function setLocatity(json) {
+  let results = json.results;
+  let len_results = results.length
+  let search_val = $("#search_locality").val().toLowerCase().split(" ");
+  let items = '';
+  for (let i = 0; i < len_results; i++) {
+    let item = results[i];
+    items += '<a class="btn btn-light rounded-0 w-100 locality-item" data-value="' + item.id + '" href="#">';
+    let fields = [item.region, item.city_type, item.city];
+    for (let j = 0; j < fields.length; j++) {
+      for(let w = 0; w < search_val.length; w++) {
+      let index_start = fields[j].toLowerCase().indexOf(search_val[w]);
+      let index_end = index_start + search_val[w].length;
+      if (index_start >= 0)
+        fields[j] = fields[j].slice(0, index_start) + "<b>"+ fields[j].slice(index_start, index_end) + "</b>" + fields[j].slice(index_end);
+    }
+    items += j < fields.length - 2 ? fields[j] + ", " : fields[j] + " ";
+    }
+    items += '</a>';
+  }
+  $("#search_locality_item").html(items);
+}
+
+
+function getLocatity() {
+  let search_val = $(this).val();
+  if (search_val.length >= 3) {
+    $.ajax({
+      url: "/api/v1/locations",
+      data: {search: search_val},
+      type: "GET",
+      dataType : "json",
+    }).done(setLocatity)
+  }
+}
+
+
+function sliceButtonSearch() {
+  let text = $("#example-two-button").text();
+  if (text.length > 50)
+  $("#example-two-button").text(text.slice(0, 47) + "...");
+}
+
 
 $(function() {
     $("#slider-range").slider({
@@ -122,7 +165,7 @@ $(function() {
         new_choice_min = ui.values[0];
         new_choice_max = ui.values[1];
         activateButtonFilter(
-          old_cities, old_users
+          old_locations, old_users
         )
         $("#price").val(ui.values[0] + "р." + " - " + ui.values[1] + "р.");
       }
@@ -131,11 +174,11 @@ $(function() {
       " - " + $("#slider-range").slider("values", 1) + "р.");
   });
 $("#button-filter").on("click", filterOrders);
-$("#cities").change(function() {
-  activateButtonFilter(old_cities, old_users)
+$("#locations").change(function() {
+  activateButtonFilter(old_locations, old_users)
 });
 $("#users").change(function() {
-  activateButtonFilter(old_cities, old_users)
+  activateButtonFilter(old_locations, old_users)
 });
 $(window).on("load", showModal);
 $("#id_price").on("input", validationPrice);
@@ -143,3 +186,11 @@ $("#id_images").on("change", validationImages);
 $("#id_images").on("change", setOrderImage);
 $("#id_user_picture").on("change", setUserImage);
 $(".delete_image").change(validationImages);
+$(document).ready(function(){
+  $('#example').hierarchySelect({
+  hierarchy: false,
+  width: 'auto'
+ });
+});
+$("#search_locality").on("input", getLocatity);
+$(document).on("click", ".locality-item", sliceButtonSearch);

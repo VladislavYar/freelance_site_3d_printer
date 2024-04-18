@@ -1,0 +1,19 @@
+<tr>
+    <td class="text-center">
+        <a 
+         class="link-primary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+         href="{% url 'order:order' pk=order.id %}"
+         >
+         {{ order.description|truncatechars:10 }}
+        </a>
+    </td>
+    <td class="text-center">
+        {{ order.price }} р.
+    </td>
+    <td class="text-center">
+        {{ order.locality.region }},<br>{{ order.locality.abbreviated_city_type }} {{ order.locality.city }}
+    </td>
+    <td class="text-center">
+        {{ order.days_left }}
+    </td>
+</tr>

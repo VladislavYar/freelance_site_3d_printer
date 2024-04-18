@@ -3,10 +3,49 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
-from order.constants import PRICE_MAX, PRICE_MIN
+from order.constants import (PRICE_MAX, PRICE_MIN, LEN_REGION,
+                             LEN_CITY_TYPE, LEN_ABBREAVIATED_CITY_TYPE,
+                             LEN_MUN_DISTRICT, LEN_CITY)
 
 
 User = get_user_model()
+
+
+class Locality(models.Model):
+    """Модель населённых пунктов."""
+    region = models.CharField(
+        max_length=LEN_REGION,
+        verbose_name=_('Регион'),
+        help_text=_('Регион')
+    )
+    mun_district = models.CharField(
+        max_length=LEN_MUN_DISTRICT,
+        verbose_name=_('Муниципальный район'),
+        help_text=_('Муниципальный район')
+    )
+    city_type = models.CharField(
+        max_length=LEN_CITY_TYPE,
+        verbose_name=_('Тип поселения'),
+        help_text=_('Тип поселения')
+    )
+    abbreviated_city_type = models.CharField(
+        max_length=LEN_ABBREAVIATED_CITY_TYPE,
+        verbose_name=_('Сокращённый тип поселения'),
+        help_text=_('Сокращённый тип поселения')
+    )
+    city = models.CharField(
+        max_length=LEN_CITY,
+        verbose_name=_('Населённый пункт'),
+        help_text=_('Населённый пункт')
+    )
+
+    class Meta:
+        verbose_name = _('Населённый пункт')
+        verbose_name_plural = _('Населённые пукты')
+
+    def __str__(self) -> str:
+        return (f'{self.region} - {self.mun_district} '
+                f'- {self.city_type} {self.city}')
 
 
 class Order(models.Model):
@@ -28,9 +67,11 @@ class Order(models.Model):
             MinValueValidator(PRICE_MIN), MaxValueValidator(PRICE_MAX),
             )
         )
-    city = models.CharField(
-        max_length=50, verbose_name=_('Город выполения'),
-        help_text=_('Город выполения')
+    locality = models.ForeignKey(
+        Locality, on_delete=models.CASCADE,
+        related_name='orders',
+        verbose_name=_('Населённый пункт'),
+        help_text=_('Населённый пункт')
         )
     date = models.DateField(
         auto_now_add=True, verbose_name=_('Дата создания'),
