@@ -17,18 +17,25 @@
                     <div class="form-row">
                         {% csrf_token %}
                         <div class="row">
-                            <div class="col-6">
-                                <label for="{{ form.city.auto_id }}" class="form-label">{{ form.city.label }}</label>
-                                    {% if form.city.errors %}
-                                        {{ form.city|addclass:"form-control is-invalid" }}
+                            <div class="col-12">
+                                <label for="{{ form.locality.auto_id }}" class="form-label">{{ form.locality.label }}</label>
+                                    {% if form.locality.errors %}
+                                        {{ form.locality|addclass:"form-control is-invalid" }}
                                     {% else %}
-                                        {{ form.city }}
+                                        {{ form.locality }}
                                     {% endif %}
                                 <div class="invalid-feedback">
-                                    {{ form.city.errors }}
+                                    {{ form.locality.errors }}
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <datalist id="localityOptions">
+                                <option value="San Francisco">
+                                <option value="New York">
+                                <option value="Seattle">
+                                <option value="Los Angeles">
+                                <option value="Chicago">
+                            </datalist>
+                            <div class="col-12">
                                 <label for="{{ form.price.auto_id }}" class="form-label">{{ form.price.label }}</label>
                                 {% if form.price.errors %}
                                     {{ form.price|addclass:"form-control is-invalid" }}
@@ -75,51 +82,47 @@
                             </div>
                         </div>
                         {% url 'order:index' as ORDER_INDEX %}
-                        {% if request.path != ORDER_INDEX %}
+                        {% if request.path != ORDER_INDEX and images %}
                             <div class="col-12 mt-4 pt-1 border-top">
                                 <label for="{{ form.images.auto_id }}" class="form-label">Текущее {{ form.images.label|lower }}</label>
                                 <div id="orderImageIndicators" class="carousel slide mt-1 img" data-bs-interval="false" data-ride="carousel" data-pause="hover">
-                                    {% if not images %}
-                                        <img class="d-block w-100 border border-1 rounded img" src="{{ NO_DATA }}" alt="нет данных">
-                                    {% else %}
-                                        <div class="carousel-indicators pb-4">
-                                            {% for image in images %}
-                                                <button
-                                                type="button" data-bs-target="#orderImageIndicators" data-bs-slide-to="{{  forloop.counter0 }}" {% if forloop.counter0 == 0 %}class="active" aria-current="true"{% endif %} aria-label="Slide {{  forloop.counter0 }}">
-                                                
-                                                </button>
-                                            {% endfor %}
-                                        </div>
-                                        <div class="carousel-inner">
-                                            {% for image in images %}
-                                                {% thumbnail image.image "500x500" crop="center" upscale=True  as im %}
-                                                    <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
-                                                        <img src="{{ im.url }}" class="d-block w-100" alt="заказ">
-                                                        <div class="form-check mt-2 w-25 mx-auto">
-                                                            <input
-                                                            type="checkbox"
-                                                            name="delete_image_{{ image.id }}"
-                                                            class="form-check-input delete_image"
-                                                            aria-describedby="delete_image_helptext"
-                                                            id="delete_image_{{ image.id }}"
-                                                            >
-                                                            <label class="form-check-label" for="delete_image_{{ image.id }}">
-                                                                Удалить
-                                                            </label>
-                                                        </div>
+                                    <div class="carousel-indicators pb-4">
+                                        {% for image in images %}
+                                            <button
+                                            type="button" data-bs-target="#orderImageIndicators" data-bs-slide-to="{{  forloop.counter0 }}" {% if forloop.counter0 == 0 %}class="active" aria-current="true"{% endif %} aria-label="Slide {{  forloop.counter0 }}">
+                                            
+                                            </button>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="carousel-inner">
+                                        {% for image in images %}
+                                            {% thumbnail image.image "500x500" crop="center" upscale=True  as im %}
+                                                <div class="carousel-item{% if forloop.counter == 1 %} active{% endif %}">
+                                                    <img src="{{ im.url }}" class="d-block w-100" alt="заказ">
+                                                    <div class="form-check mt-2 w-25 mx-auto">
+                                                        <input
+                                                        type="checkbox"
+                                                        name="delete_image_{{ image.id }}"
+                                                        class="form-check-input delete_image"
+                                                        aria-describedby="delete_image_helptext"
+                                                        id="delete_image_{{ image.id }}"
+                                                        >
+                                                        <label class="form-check-label" for="delete_image_{{ image.id }}">
+                                                            Удалить
+                                                        </label>
                                                     </div>
-                                                {% endthumbnail %}
-                                            {% endfor %}
-                                        </div>
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#orderImageIndicators" data-bs-slide="prev">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Previous</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#orderImageIndicators" data-bs-slide="next">
-                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                            <span class="visually-hidden">Next</span>
-                                        </button>
-                                    {% endif %}
+                                                </div>
+                                            {% endthumbnail %}
+                                        {% endfor %}
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#orderImageIndicators" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#orderImageIndicators" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
                             </div>
                         {% endif %}

@@ -9,7 +9,7 @@
 {% block col_count_2 %}
 {% endblock %}
 {% block col_count_1 %}
-    <div class="row g-0">
+    <div class="row g-0 bg-white">
         {% if user == order.user %}
             {% include 'includes/order_update_delete.html' %}
         {% endif %}
@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-12 text-center ps-2 pe-2">
                     <p class="text-break">
-                        <strong>Город:</strong> {{ order.city }}
+                        <strong>Населённый пункт:</strong><br>{{ order.locality.mun_district  }}{% if order.locality.mun_district|slice:"-2:" == "ий" %} район{% endif %},<br>{{ order.locality.abbreviated_city_type }} {{ order.locality.city }}
                     </p>
                 </div>
                 <div class="col-12 text-center ps-2 pe-2">

@@ -6,12 +6,11 @@ from django.core.paginator import Paginator
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth import get_user_model
-from transliterate import translit
 
 from account.models import User as ClassUser
 from order.constants import ORDERS_PRE_PAGE
 from order.forms import OrderForm
-from order.models import Order, OrderImage
+from order.models import Order, OrderImage, Locality
 
 
 User = get_user_model()
@@ -23,23 +22,30 @@ def get_data_filter_template(user: ClassUser) -> dict:
     if user.is_authenticated:
         user_id = user.id
     users = User.objects.filter(
-        id__in=set(Order.objects.all().values_list('user', flat=True).distinct())
+        id__in=set(
+            Order.objects.all().values_list('user', flat=True).distinct()
+            )
         ).exclude(id=user_id)
     min_max_price = Order.objects.exclude(user=user_id).aggregate(
         Min('price'), Max('price')
         )
-    cities = set(
-        Order.objects.all().exclude(
-            user=user_id).values_list('city', flat=True)
-        )
-    return {'users': users, 'min_max_price': min_max_price, 'cities': cities}
+    locations = Locality.objects.filter(
+        id__in=Order.objects.all().exclude(
+            user=user_id
+            ).values_list('locality', flat=True)
+        ).distinct()
+    return {
+        'users': users,
+        'min_max_price': min_max_price,
+        'locations': locations,
+        }
 
 
 def get_data_filter_model(
         user: ClassUser, data: dict, data_filter_template: dict
         ) -> tuple:
     """Отдаёт данные для фильтра модели."""
-    cities = data.get('cities')
+    locations = data.get('locations')
     users = data.get('users')
     min_price = data.get('min_price')
     max_price = data.get('max_price')
@@ -49,17 +55,17 @@ def get_data_filter_model(
         ]
     if min_price and max_price:
         price = [int(min_price), int(max_price)]
-    if not cities:
-        cities = data_filter_template["cities"]
+    if not locations:
+        locations = data_filter_template["locations"]
     else:
-        cities = translit(cities, 'ru').title().split(',')
+        locations = locations.split(',')
     if not users:
         users = []
         for user in data_filter_template["users"]:
             users.append(user.username)
     else:
         users = users.split(',')
-    return price, cities, users
+    return price, locations, users
 
 
 def get_pagination(
@@ -80,11 +86,11 @@ def get_pagination(
 
 
 def get_filter_orders(
-        user: ClassUser, cities: list, users: list, price: list
+        user: ClassUser, locations: list, users: list, price: list
         ) -> tuple[list[Order]]:
     """Отдаёт отфильтрованные заказы/предложения."""
     orders = Order.objects.filter(
-        city__in=cities, user__username__in=users,
+        locality__in=locations, user__username__in=users,
         price__range=price
         )
     if user.is_authenticated:
@@ -117,11 +123,11 @@ def index(request: WSGIRequest) -> HttpResponse:
     user = request.user
     data_get = request.GET.copy()
     data_filter_template = get_data_filter_template(user)
-    price, cities, users = get_data_filter_model(
+    price, locations, users = get_data_filter_model(
         user, data_get, data_filter_template
         )
     orders_customer, orders_no_customer = get_filter_orders(
-        user, cities, users, price
+        user, locations, users, price
         )
     page_obj_customer, page_obj_no_customer = get_pagination(
         orders_no_customer, orders_customer, data_get
