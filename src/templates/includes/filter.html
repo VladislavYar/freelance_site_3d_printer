@@ -18,7 +18,7 @@
         <select id="locations" class="form-select form-select-sm castom-shadow castom-shadow-hover" multiple>
             {% for locality in data_filter.locations %}
                 <option class="castom-option" {% if locality.id|slugify in request.GET.locations|str_in_list:"," %}selected{% endif %} value="{{ locality.id }}">
-                    {{ locality.mun_district  }}{% if locality.mun_district|slice:"-2:" == "ий" %} район{% endif %}, {{ locality.abbreviated_city_type }} {{ locality.city }}
+                    {{ locality.region }}, {{ locality.abbreviated_city_type }} {{ locality.city }}
                 </option>
             {% endfor %}
         </select>         

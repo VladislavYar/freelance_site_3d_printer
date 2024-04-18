@@ -111,6 +111,49 @@ function setUserImage() {
     $("#id_user_image").attr("src", old_src_user_image);
 }
 
+function setLocatity(json) {
+  let results = json.results;
+  let len_results = results.length
+  let search_val = $("#search_locality").val().toLowerCase().split(" ");
+  let items = '';
+  for (let i = 0; i < len_results; i++) {
+    let item = results[i];
+    items += '<a class="btn btn-light rounded-0 w-100 locality-item" data-value="' + item.id + '" href="#">';
+    let fields = [item.region, item.city_type, item.city];
+    for (let j = 0; j < fields.length; j++) {
+      for(let w = 0; w < search_val.length; w++) {
+      let index_start = fields[j].toLowerCase().indexOf(search_val[w]);
+      let index_end = index_start + search_val[w].length;
+      if (index_start >= 0)
+        fields[j] = fields[j].slice(0, index_start) + "<b>"+ fields[j].slice(index_start, index_end) + "</b>" + fields[j].slice(index_end);
+    }
+    items += j < fields.length - 2 ? fields[j] + ", " : fields[j] + " ";
+    }
+    items += '</a>';
+  }
+  $("#search_locality_item").html(items);
+}
+
+
+function getLocatity() {
+  let search_val = $(this).val();
+  if (search_val.length >= 3) {
+    $.ajax({
+      url: "/api/v1/locations",
+      data: {search: search_val},
+      type: "GET",
+      dataType : "json",
+    }).done(setLocatity)
+  }
+}
+
+
+function sliceButtonSearch() {
+  let text = $("#example-two-button").text();
+  if (text.length > 50)
+  $("#example-two-button").text(text.slice(0, 47) + "...");
+}
+
 
 $(function() {
     $("#slider-range").slider({
@@ -143,3 +186,11 @@ $("#id_images").on("change", validationImages);
 $("#id_images").on("change", setOrderImage);
 $("#id_user_picture").on("change", setUserImage);
 $(".delete_image").change(validationImages);
+$(document).ready(function(){
+  $('#example').hierarchySelect({
+  hierarchy: false,
+  width: 'auto'
+ });
+});
+$("#search_locality").on("input", getLocatity);
+$(document).on("click", ".locality-item", sliceButtonSearch);

@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-12 text-center ps-2 pe-2">
                     <p class="text-break">
-                        <strong>Населённый пункт:</strong><br>{{ order.locality.mun_district  }}{% if order.locality.mun_district|slice:"-2:" == "ий" %} район{% endif %},<br>{{ order.locality.abbreviated_city_type }} {{ order.locality.city }}
+                        <strong>Населённый пункт:</strong><br>{{ order.locality.region }},<br>{{ order.locality.abbreviated_city_type }} {{ order.locality.city }}
                     </p>
                 </div>
                 <div class="col-12 text-center ps-2 pe-2">

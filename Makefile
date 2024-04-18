@@ -27,3 +27,8 @@ project-start-dev: # Запустить проект
 containers-stop-dev: # Остановить контейнеры
 	docker compose -f ./infra/docker-compose.dev.yml  --env-file .env down;
 
+celery-worker-start: # Запуск worker
+	cd src/ && celery -A freelance_site worker -l info --without-gossip --without-mingle --without-heartbeat -Ofair --pool=solo
+
+celery-beat-start: # Запуск beat
+	cd src/ && celery -A freelance_site beat --loglevel=INFO

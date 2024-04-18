@@ -5,7 +5,15 @@ from order.models import Order, OrderImage, Locality
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'user',
+        'is_customer',
+        'description',
+        'price',
+        'locality',
+        'date',
+    )
+    readonly_fields = ('locality', )
 
 
 @admin.register(OrderImage)
@@ -14,5 +22,5 @@ class OrderImagesAdmin(admin.ModelAdmin):
 
 
 @admin.register(Locality)
-class LocalitysAdmin(admin.ModelAdmin):
+class LocalityAdmin(admin.ModelAdmin):
     pass

@@ -6,7 +6,7 @@
         <div class="col-12 col-lg-8 col-xl-9 castom-border">
             <div class="col-12">
                 <div class="text-center ps-3 pe-2 fs-4">Описание</div>
-                <p class="text-break ps-3 pe-2"> border-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-endborder-end{{ order.description }}</p>
+                <p class="text-break ps-3 pe-2">{{ order.description }}</p>
             </div>
             {% with order.images.all as images %}
                 {% if images %}
@@ -60,9 +60,9 @@
                     <div><strong>Оплата</strong></div>
                     <p class="text-break">{{ order.price }}p.</p>
                 </div>
-                <div class="col-4 col-lg-12 text-center ps-1 pe-1">
+                <div class="col-4 col-lg-12 text-center">
                     <div><strong>Населённый пункт</strong></div>
-                    <p class="text-break">{{ order.locality.mun_district  }}{% if order.locality.mun_district|slice:"-2:" == "ий" %} район{% endif %},<br>{{ order.locality.abbreviated_city_type }} {{ order.locality.city }}</p>
+                    <p class="text-break ps-1 pe-1">{{ order.locality.region }},<br>{{ order.locality.abbreviated_city_type }} {{ order.locality.city }}</p>
                 </div>
                 <div class="col-4 col-lg-12 text-center">
                     <div><strong>Дата</strong></div>

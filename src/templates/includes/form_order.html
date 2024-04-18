@@ -5,37 +5,47 @@
 
 <div class="modal fade" id="formOrder"{% if not form_valid %} errors="true"{% endif %} tabindex="-1" aria-labelledby="formOrderLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-dark">
+        <div class="modal-content bg-dark">
+            <div class="modal-header">
                 <h5 class="modal-title text-secondary" id="formOrderLabel">Создание заказа/предложения</h5>
                 <div data-bs-theme="dark">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
             </div>
             <form method="post" enctype="multipart/form-data">
-                <div class="modal-body">
+                <div class="modal-body bg-white">
                     <div class="form-row">
                         {% csrf_token %}
                         <div class="row">
+                            <label for="{{ form.locality.auto_id }}" class="form-label">{{ form.locality.label }}</label>
                             <div class="col-12">
-                                <label for="{{ form.locality.auto_id }}" class="form-label">{{ form.locality.label }}</label>
+                                <div class="dropdown hierarchy-select" id="example">
+                                    <button type="button" class="btn btn-outline-light text-dark border dropdown-toggle w-100" style="word-wrap: break-word;" id="example-two-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                    <div class="dropdown-menu w-100" aria-labelledby="example-two-button">
+                                        <div class="hs-searchbox">
+                                            <input
+                                             type="text"
+                                             class="form-control{% if form.locality.errors %} is-invalid{% endif %}"
+                                             list="localityOptions"
+                                             placeholder="Начните вводить населённый пункт и выберите из списка"
+                                             id="search_locality"
+                                             size="1">
+                                        </div>
+                                        <div id="search_locality_item" class="hs-menu-inner">
+                                        </div>
+                                    </div>
                                     {% if form.locality.errors %}
-                                        {{ form.locality|addclass:"form-control is-invalid" }}
+                                        {{ form.locality|addclass:"d-none form-control is-invalid" }}
                                     {% else %}
                                         {{ form.locality }}
                                     {% endif %}
-                                <div class="invalid-feedback">
+                                </div>
+                                <div class="text-danger">
                                     {{ form.locality.errors }}
                                 </div>
                             </div>
-                            <datalist id="localityOptions">
-                                <option value="San Francisco">
-                                <option value="New York">
-                                <option value="Seattle">
-                                <option value="Los Angeles">
-                                <option value="Chicago">
-                            </datalist>
-                            <div class="col-12">
+
+                            <div class="col-12 mt-3">
                                 <label for="{{ form.price.auto_id }}" class="form-label">{{ form.price.label }}</label>
                                 {% if form.price.errors %}
                                     {{ form.price|addclass:"form-control is-invalid" }}
@@ -43,6 +53,7 @@
                                     {{ form.price }}
                                 {% endif %}
                                 <div class="invalid-feedback">
+                                    {{ form.locality.errors }}
                                     {{ form.price.errors }}
                                 </div>
                             </div>
@@ -128,7 +139,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="modal-footer bg-dark">
+                <div class="modal-footer">
                     <div class="col-12 mt-3 text-center">
                         <button class="btn btn-outline-success" type="submit">Сохранить</button>
                     </div>

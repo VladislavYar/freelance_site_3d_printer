@@ -28,9 +28,9 @@ class OrderForm(forms.ModelForm):
         widgets = {
             'locality': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
-                    'list': 'localityOptions',
-                    'placeholder': _('Начните вводить и выберите из списка'),
+                    'class': 'd-none',
+                    'readonly': 'readonly',
+                    'true': 'true',
                     }
                 ),
             'price': forms.TextInput(
